@@ -21,7 +21,7 @@ export const Ring: FC<Props> = ({
   ringPositions,
   handleRingPositions,
 }) => {
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const generateRandomPosition = () => {
     const x = Math.random() * (95 - 4) + 4;

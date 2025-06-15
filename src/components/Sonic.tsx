@@ -26,8 +26,8 @@ export const Sonic: FC<Props> = ({
   handleSonicPosition,
   colided,
 }) => {
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const jumpIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const jumpIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [speed, setSpeed] = useState(1);
   const speedRef = useRef(speed);
   const [direction, setDirection] = useState<

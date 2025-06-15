@@ -18,7 +18,7 @@ export const Bomb: FC<Props> = ({
   bombPosition,
   handleBombPosition,
 }) => {
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const generateRandomPosition = () => {
     const x = Math.random() * (95 - 4) + 4;
