@@ -51,11 +51,8 @@ export const Bomb: FC<Props> = ({
   };
 
   const reset = () => {
+    stopMoving();
     generateRandomPosition();
-    if (intervalRef.current !== null) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
   };
 
   useEffect(() => {
@@ -69,8 +66,6 @@ export const Bomb: FC<Props> = ({
 
     return () => stopMoving();
   }, [colided, bombPosition.y]);
-
-  startMoving();
 
   return (
     <>
