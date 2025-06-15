@@ -1,4 +1,10 @@
-import { useRef, type Dispatch, type FC, type SetStateAction } from 'react';
+import {
+  useEffect,
+  useRef,
+  type Dispatch,
+  type FC,
+  type SetStateAction,
+} from 'react';
 import bombImg from './../assets/bombImg.png';
 import explosionImg from './../assets/explosionImg.png';
 
@@ -51,6 +57,18 @@ export const Bomb: FC<Props> = ({
       intervalRef.current = null;
     }
   };
+
+  useEffect(() => {
+    if (colided) {
+      stopMoving();
+    } else if (bombPosition.y >= 80) {
+      reset();
+    } else {
+      startMoving();
+    }
+
+    return () => stopMoving();
+  }, [colided, bombPosition.y]);
 
   startMoving();
 

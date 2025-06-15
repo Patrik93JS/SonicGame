@@ -1,11 +1,19 @@
-import { useMemo, useState, type FC, type SetStateAction } from 'react';
+import {
+  useEffect,
+  useMemo,
+  useState,
+  type FC,
+  type SetStateAction,
+} from 'react';
 import { Layout } from './Layout';
 import { Rat } from './components/Rat';
 import { Bomb } from './components/Bomb';
+import { Star } from './components/Star';
 
 const App: FC = () => {
   const [ratPosition, setRatPosition] = useState({ x: 50, y: 80 });
   const [bombPosition, setBombPosition] = useState({ x: 50, y: 20 });
+  const [stars, setStars] = useState(0);
 
   const ratSize = 4;
   const bombSize = 4;
@@ -39,6 +47,17 @@ const App: FC = () => {
     setBombPosition(value);
   };
 
+  const generateStarsArr = () => {
+    const starsLenght = Math.floor(Math.random() * (10 - 5) + 1);
+
+    const x = Math.random() * (10 - 1) + starsLenght;
+    return setStars(x);
+  };
+
+  useEffect(() => {
+    stars === 0 ? generateStarsArr() : null;
+  });
+
   return (
     <Layout>
       <Rat ratPosition={ratPosition} handleRatPosition={handleRatPosition} />
@@ -47,6 +66,9 @@ const App: FC = () => {
         bombPosition={bombPosition}
         handleBombPosition={handleBombPosition}
       />
+      {Array.from({ length: stars }, (_, i) => i + 1).map((i) => (
+        <Star key={i} colided={colided} />
+      ))}
     </Layout>
   );
 };
