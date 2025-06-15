@@ -1,20 +1,31 @@
-import { useEffect, useRef, useState, type FC } from 'react';
+import {
+  useEffect,
+  useRef,
+  type Dispatch,
+  type FC,
+  type SetStateAction,
+} from 'react';
 import starImg from './../assets/starImg.png';
 
 type Props = {
   colided: boolean;
+  starPosition: {
+    x: number;
+    y: number;
+  };
+  handleStarPosition: Dispatch<SetStateAction<{ x: number; y: number }>>;
 };
 
-export const Star: FC<Props> = ({ colided }) => {
-  const x = Math.random() * (95 - 4) + 4;
-  const y = Math.random() * (80 - 40) + 4;
-  const [starPosition, setStarPosition] = useState({ x: x, y: y });
-
+export const Star: FC<Props> = ({
+  colided,
+  starPosition,
+  handleStarPosition,
+}) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const generateRandomPosition = () => {
     const x = Math.random() * (95 - 4) + 4;
-    setStarPosition({ x, y: 20 });
+    handleStarPosition({ x, y: 20 });
   };
 
   const startMoving = () => {
@@ -22,7 +33,7 @@ export const Star: FC<Props> = ({ colided }) => {
     if (starPosition.y === 80) reset();
     if (intervalRef.current === null) {
       intervalRef.current = setInterval(() => {
-        setStarPosition((prev) => {
+        handleStarPosition((prev) => {
           const step = 1;
           return { x: prev.x, y: Math.max(prev.y + step, 4) };
         });
@@ -40,7 +51,7 @@ export const Star: FC<Props> = ({ colided }) => {
 
   const stopMoving = () => {
     if (intervalRef.current) {
-      setStarPosition((prev) => {
+      handleStarPosition((prev) => {
         return { x: prev.x, y: prev.y };
       });
       clearInterval(intervalRef.current);
