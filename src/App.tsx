@@ -3,8 +3,8 @@ import { Layout } from './Layout';
 import { Sonic } from './components/Sonic';
 import { Bomb } from './components/Bomb';
 import { Ring } from './components/Ring';
-import { useColided } from './hooks/useColided';
-import { getScore } from './hooks/getScore';
+import { getColided } from './funcs/getColided';
+import { getScore } from './funcs/getScore';
 
 type Position = { x: number; y: number };
 
@@ -17,7 +17,7 @@ const App: FC = () => {
   const [bombPosition, setBombPosition] = useState<Position>({ x: 50, y: 20 });
   const [score, setScore] = useState(0);
 
-  const colided = useColided(sonicPosition, bombPosition);
+  const colided = getColided(sonicPosition, bombPosition);
 
   const generateStars = () => {
     const count = Math.floor(Math.random() * 3) + 7;
