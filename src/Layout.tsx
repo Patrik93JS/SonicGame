@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { Beams } from './components/Beams';
-import { Floor } from './components/floor';
+import { Floor } from './components/Floor';
 import { Roof } from './components/Roof';
 
 export const Layout: FC = () => {
