@@ -53,7 +53,6 @@ const App: FC = () => {
       }));
     });
   }, [score]);
-  console.log('haf');
 
   useEffect(() => {
     generateStars();
