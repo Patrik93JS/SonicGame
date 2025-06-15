@@ -134,7 +134,6 @@ export const Sonic: FC<Props> = ({
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      console.log(`Key up: ${e.key}`);
       if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
         stopMoving();
       }
