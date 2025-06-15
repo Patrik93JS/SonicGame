@@ -1,6 +1,6 @@
 import { useEffect, useState, type FC, type SetStateAction } from 'react';
 import { Layout } from './Layout';
-import { Rat } from './components/Rat';
+import { Sonic } from './components/Sonic';
 import { Bomb } from './components/Bomb';
 import { Star } from './components/Star';
 import { useColided } from './hooks/useColided';
@@ -10,11 +10,14 @@ type Position = { x: number; y: number };
 
 const App: FC = () => {
   const [starPositions, setStarPositions] = useState<Position[]>([]);
-  const [ratPosition, setRatPosition] = useState<Position>({ x: 50, y: 80 });
+  const [sonicPosition, setSonicPosition] = useState<Position>({
+    x: 50,
+    y: 80,
+  });
   const [bombPosition, setBombPosition] = useState<Position>({ x: 50, y: 20 });
   const [score, setScore] = useState(0);
 
-  const colided = useColided(ratPosition, bombPosition);
+  const colided = useColided(sonicPosition, bombPosition);
 
   const generateStars = () => {
     const count = Math.floor(Math.random() * 3) + 7;
@@ -31,7 +34,7 @@ const App: FC = () => {
 
   useEffect(() => {
     starPositions.forEach((starPos, index) => {
-      if (getScore(ratPosition, starPos)) {
+      if (getScore(sonicPosition, starPos)) {
         setScore((prev) => prev + 1);
         setStarPositions((prev) =>
           prev.map((pos, i) =>
@@ -45,10 +48,10 @@ const App: FC = () => {
         );
       }
     });
-  }, [ratPosition, starPositions]);
+  }, [sonicPosition, starPositions]);
 
-  const handleRatPosition = (value: SetStateAction<Position>) => {
-    setRatPosition(value);
+  const handleSonicPosition = (value: SetStateAction<Position>) => {
+    setSonicPosition(value);
   };
 
   const handleBombPosition = (value: SetStateAction<Position>) => {
@@ -72,7 +75,10 @@ const App: FC = () => {
         Score: {score}
       </div>
 
-      <Rat ratPosition={ratPosition} handleRatPosition={handleRatPosition} />
+      <Sonic
+        sonicPosition={sonicPosition}
+        handleSonicPosition={handleSonicPosition}
+      />
       <Bomb
         colided={colided}
         bombPosition={bombPosition}
