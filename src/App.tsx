@@ -1,11 +1,7 @@
-import { Floor } from './components/floor';
+import { Layout } from './Layout';
 
 function App() {
-  return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <Floor />
-    </div>
-  );
+  return <Layout />;
 }
 
 export default App;
