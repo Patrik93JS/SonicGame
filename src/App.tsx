@@ -5,6 +5,7 @@ import { Bomb } from './components/Bomb';
 import { Ring } from './components/Ring';
 import { getColided } from './funcs/getColided';
 import { getScore } from './funcs/getScore';
+import { EndGame } from './EndGame';
 
 type Position = { x: number; y: number };
 
@@ -15,7 +16,7 @@ const App: FC = () => {
     y: 80,
   });
   const [bombPosition, setBombPosition] = useState<Position>({ x: 50, y: 20 });
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState<number>(0);
 
   const colided = getColided(sonicPosition, bombPosition);
 
@@ -69,7 +70,9 @@ const App: FC = () => {
     );
   };
 
-  return (
+  return colided ? (
+    <EndGame score={score} />
+  ) : (
     <Layout>
       <div className="bg-blue-400 text-white fixed top-[5%] left-[10%] w-[10%] h-[5%] text-3xl justify-center items-center flex">
         Score: {score}
