@@ -1,4 +1,10 @@
-import { useEffect, useState, type FC, type SetStateAction } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useState,
+  type FC,
+  type SetStateAction,
+} from 'react';
 import { Layout } from './Layout';
 import { Sonic } from './components/Sonic';
 import { Bomb } from './components/Bomb';
@@ -13,21 +19,21 @@ const App: FC = () => {
   const [ringPositions, setRingPositions] = useState<Position[]>([]);
   const [sonicPosition, setSonicPosition] = useState<Position>({
     x: 50,
-    y: 80,
+    y: 81,
   });
   const [bombPosition, setBombPosition] = useState<Position>({ x: 50, y: 20 });
   const [score, setScore] = useState<number>(0);
 
   const colided = getColided(sonicPosition, bombPosition);
 
-  const generateStars = () => {
+  const generateStars = useCallback(() => {
     const count = Math.floor(Math.random() * 3) + 7;
     const newStars: Position[] = Array.from({ length: count }, () => ({
       x: Math.random() * (95 - 4) + 4,
       y: Math.random() * (80 - 40) + 40,
     }));
     setRingPositions(newStars);
-  };
+  }, []);
 
   useEffect(() => {
     generateStars();
