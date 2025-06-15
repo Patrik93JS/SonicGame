@@ -28,57 +28,46 @@ export const Star: FC<Props> = ({
     handleStarPosition({ x, y: 20 });
   };
 
-  const startMoving = () => {
-    if (colided) stopMoving();
-    if (starPosition.y === 80) reset();
-    if (intervalRef.current === null) {
-      intervalRef.current = setInterval(() => {
-        handleStarPosition((prev) => {
-          const step = 1;
-          return { x: prev.x, y: Math.max(prev.y + step, 4) };
-        });
-      }, 30);
+  const stopMoving = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
     }
   };
 
   const reset = () => {
+    stopMoving();
     generateRandomPosition();
-    if (intervalRef.current !== null) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-  };
-
-  const stopMoving = () => {
-    if (intervalRef.current) {
-      handleStarPosition((prev) => {
-        return { x: prev.x, y: prev.y };
-      });
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
   };
 
   useEffect(() => {
-    if (colided) {
+    if (colided || starPosition.y >= 80) {
       stopMoving();
-    } else if (starPosition.y >= 80) {
-      reset();
-    } else {
-      startMoving();
+    }
+
+    if (!colided && starPosition.y < 80 && intervalRef.current === null) {
+      intervalRef.current = setInterval(() => {
+        handleStarPosition((prev) => {
+          return { x: prev.x, y: prev.y + 1 };
+        });
+      }, 30);
     }
 
     return () => stopMoving();
   }, [colided, starPosition.y]);
 
+  useEffect(() => {
+    if (starPosition.y >= 80) {
+      reset();
+    }
+  }, [starPosition.y]);
+
   return (
-    <>
-      <img
-        src={starImg}
-        alt="Bomb"
-        style={{ left: `${starPosition.x}%`, top: `${starPosition.y}%` }}
-        className="absolute transform -translate-x-1/2 w-16 h-16"
-      />
-    </>
+    <img
+      src={starImg}
+      alt="Star"
+      style={{ left: `${starPosition.x}%`, top: `${starPosition.y}%` }}
+      className="absolute transform -translate-x-1/2 w-16 h-16"
+    />
   );
 };
