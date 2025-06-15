@@ -1,9 +1,11 @@
+import { Floor } from './components/floor';
+
 function App() {
-	return (
-		<div className="min-h-screen bg-gray-100 flex items-center justify-center">
-			<h1 className="text-4xl font-bold text-blue-600">Vítej v ratGame!</h1>
-		</div>
-	);
+  return (
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <Floor />
+    </div>
+  );
 }
 
 export default App;
