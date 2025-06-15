@@ -1,7 +1,13 @@
+import type { FC } from 'react';
 import { Layout } from './Layout';
+import { Rat } from './components/Rat';
 
-function App() {
-  return <Layout />;
-}
+const App: FC = () => {
+  return (
+    <Layout>
+      <Rat />
+    </Layout>
+  );
+};
 
 export default App;
