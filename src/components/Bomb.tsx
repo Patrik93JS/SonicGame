@@ -6,7 +6,6 @@ import {
   type SetStateAction,
 } from 'react';
 import bombImg from './../assets/bombImg.png';
-import explosionImg from './../assets/explosionImg.png';
 
 type Props = {
   colided: boolean;
@@ -68,22 +67,11 @@ export const Bomb: FC<Props> = ({
   }, [colided, bombPosition.y]);
 
   return (
-    <>
-      {colided ? (
-        <img
-          src={explosionImg}
-          alt="Explosion"
-          style={{ left: `${bombPosition.x - 4}%`, top: `${bombPosition.y}%` }}
-          className="absolute bottom-[10%] w-38 h-38"
-        />
-      ) : (
-        <img
-          src={bombImg}
-          alt="Bomb"
-          style={{ left: `${bombPosition.x}%`, top: `${bombPosition.y}%` }}
-          className="absolute transform -translate-x-1/2 w-16 h-16"
-        />
-      )}
-    </>
+    <img
+      src={bombImg}
+      alt="Bomb"
+      style={{ left: `${bombPosition.x}%`, top: `${bombPosition.y}%` }}
+      className="absolute transform -translate-x-1/2 w-16 h-16"
+    />
   );
 };

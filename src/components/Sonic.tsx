@@ -8,6 +8,7 @@ import {
 import sonic from './../assets/sonic.png';
 
 type Props = {
+  colided: boolean;
   sonicPosition: {
     x: number;
     y: number;
@@ -20,7 +21,11 @@ type Props = {
   ) => void;
 };
 
-export const Sonic: FC<Props> = ({ sonicPosition, handleSonicPosition }) => {
+export const Sonic: FC<Props> = ({
+  sonicPosition,
+  handleSonicPosition,
+  colided,
+}) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const jumpIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const [speed, setSpeed] = useState(1);
@@ -35,7 +40,7 @@ export const Sonic: FC<Props> = ({ sonicPosition, handleSonicPosition }) => {
   }, [speed]);
 
   const startMoving = (dir: 'left' | 'right') => {
-    stopMoving();
+    if (colided) stopMoving();
     setDirection(dir);
     intervalRef.current = setInterval(() => {
       handleSonicPosition((prev) => {

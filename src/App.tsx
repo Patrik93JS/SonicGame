@@ -23,7 +23,6 @@ const App: FC = () => {
   });
   const [bombPosition, setBombPosition] = useState<Position>({ x: 50, y: 20 });
   const [score, setScore] = useState<number>(0);
-  const [colidedDelay, setColidedDelay] = useState(false);
 
   const colided = getColided(sonicPosition, bombPosition);
 
@@ -76,15 +75,8 @@ const App: FC = () => {
       )
     );
   };
-  useEffect(() => {
-    const endGameInterval = setInterval(() => {
-      setColidedDelay(colided);
-    }, 3000);
 
-    return () => clearInterval(endGameInterval);
-  }, [colided]);
-
-  return colidedDelay ? (
+  return colided ? (
     <EndGame score={score} />
   ) : (
     <Layout>
@@ -93,6 +85,7 @@ const App: FC = () => {
       </div>
 
       <Sonic
+        colided={colided}
         sonicPosition={sonicPosition}
         handleSonicPosition={handleSonicPosition}
       />
