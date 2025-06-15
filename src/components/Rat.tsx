@@ -1,18 +1,32 @@
-import { useState, useEffect, useRef, type FC } from 'react';
+import { useEffect, useRef, type FC, type SetStateAction } from 'react';
 import ratImg from './../assets/ratImg.png';
 
-export const Rat: FC = () => {
-  const [ratPosition, setRatPosition] = useState(10);
+type Props = {
+  ratPosition: {
+    x: number;
+    y: number;
+  };
+  handleRatPosition: (
+    value: SetStateAction<{
+      x: number;
+      y: number;
+    }>
+  ) => void;
+};
+
+export const Rat: FC<Props> = ({ ratPosition, handleRatPosition }) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const startMoving = (direction: 'left' | 'right') => {
     stopMoving();
     intervalRef.current = setInterval(() => {
-      setRatPosition((prev) => {
+      handleRatPosition((prev) => {
         const step = 1;
-        if (direction === 'left') return Math.max(prev - step, 4);
-        if (direction === 'right') return Math.min(prev + step, 96);
-        return prev;
+        if (direction === 'left')
+          return { x: Math.max(prev.x - step, 4), y: prev.y };
+        if (direction === 'right')
+          return { x: Math.min(prev.x + step, 96), y: prev.y };
+        return { x: prev.x, y: prev.y };
       });
     }, 10);
   };
@@ -50,7 +64,7 @@ export const Rat: FC = () => {
     <img
       src={ratImg}
       alt="Rat"
-      style={{ left: `${ratPosition}%` }}
+      style={{ left: `${ratPosition.x}%`, top: `${ratPosition.y}%` }}
       className="absolute bottom-[10%] transform -translate-x-1/2 w-22 h-22"
     />
   );
