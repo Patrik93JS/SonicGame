@@ -21,6 +21,7 @@ export const Bomb: FC<Props> = ({
   };
 
   const startMoving = () => {
+    if (colided) stopMoving();
     if (bombPosition.y === 80) reset();
 
     if (intervalRef.current === null) {
@@ -30,6 +31,16 @@ export const Bomb: FC<Props> = ({
           return { x: prev.x, y: Math.max(prev.y + step, 4) };
         });
       }, 30);
+    }
+  };
+
+  const stopMoving = () => {
+    if (intervalRef.current) {
+      handleBombPosition((prev) => {
+        return { x: prev.x, y: prev.y };
+      });
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
     }
   };
 
@@ -49,7 +60,7 @@ export const Bomb: FC<Props> = ({
         <img
           src={explosionImg}
           alt="Explosion"
-          style={{ left: `${bombPosition.x}%`, top: `${bombPosition.y}%` }}
+          style={{ left: `${bombPosition.x - 4}%`, top: `${bombPosition.y}%` }}
           className="absolute bottom-[10%] w-38 h-38"
         />
       ) : (
