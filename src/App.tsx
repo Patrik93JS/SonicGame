@@ -21,10 +21,14 @@ const App: FC = () => {
     x: 50,
     y: 81,
   });
-  const [bombPosition, setBombPosition] = useState<Position>({ x: 50, y: 20 });
+  const [bombPositions, setBombPositions] = useState<Position[]>([
+    { x: 50, y: 20 },
+  ]);
   const [score, setScore] = useState<number>(0);
 
-  const colided = getColided(sonicPosition, bombPosition);
+  const colided = bombPositions.some((bombPos) =>
+    getColided(sonicPosition, bombPos)
+  );
 
   const generateStars = useCallback(() => {
     const count = Math.floor(Math.random() * 3) + 7;
@@ -35,9 +39,29 @@ const App: FC = () => {
     setRingPositions(newStars);
   }, []);
 
+  const generateBombs = useCallback(() => {
+    let bombCount = 1;
+    if (score >= 40) bombCount = 6;
+    else if (score >= 30) bombCount = 3;
+    else if (score >= 20) bombCount = 2;
+
+    setBombPositions((prev) => {
+      if (prev.length === bombCount) return prev;
+      return Array.from({ length: bombCount }, (_, i) => ({
+        x: prev[i]?.x ?? Math.random() * (95 - 4) + 4,
+        y: prev[i]?.y ?? 20,
+      }));
+    });
+  }, [score]);
+  console.log('haf');
+
   useEffect(() => {
     generateStars();
   }, []);
+
+  useEffect(() => {
+    generateBombs();
+  }, [score, generateBombs]);
 
   useEffect(() => {
     ringPositions.forEach((starPos, index) => {
@@ -61,8 +85,15 @@ const App: FC = () => {
     setSonicPosition(value);
   };
 
-  const handleBombPosition = (value: SetStateAction<Position>) => {
-    setBombPosition(value);
+  const handleBombPosition = (
+    index: number,
+    value: SetStateAction<Position>
+  ) => {
+    setBombPositions((prev) =>
+      prev.map((pos, i) =>
+        i === index ? (typeof value === 'function' ? value(pos) : value) : pos
+      )
+    );
   };
 
   const handleRingPositions = (
@@ -89,11 +120,14 @@ const App: FC = () => {
         sonicPosition={sonicPosition}
         handleSonicPosition={handleSonicPosition}
       />
-      <Bomb
-        colided={colided}
-        bombPosition={bombPosition}
-        handleBombPosition={handleBombPosition}
-      />
+      {bombPositions.map((pos, index) => (
+        <Bomb
+          key={index}
+          colided={colided}
+          bombPosition={pos}
+          handleBombPosition={(value) => handleBombPosition(index, value)}
+        />
+      ))}
       {ringPositions.map((pos, index) => (
         <Ring
           key={index}
