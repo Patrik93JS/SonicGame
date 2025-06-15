@@ -1,20 +1,23 @@
 import { useEffect, useState, type FC, type SetStateAction } from 'react';
 import { Layout } from './Layout';
-import { Rat } from './components/Rat';
+import { Sonic } from './components/Sonic';
 import { Bomb } from './components/Bomb';
-import { Star } from './components/Star';
-import { useColided } from './hooks/useColided';
-import { getScore } from './hooks/getScore';
+import { Ring } from './components/Ring';
+import { getColided } from './funcs/getColided';
+import { getScore } from './funcs/getScore';
 
 type Position = { x: number; y: number };
 
 const App: FC = () => {
-  const [starPositions, setStarPositions] = useState<Position[]>([]);
-  const [ratPosition, setRatPosition] = useState<Position>({ x: 50, y: 80 });
+  const [ringPositions, setRingPositions] = useState<Position[]>([]);
+  const [sonicPosition, setSonicPosition] = useState<Position>({
+    x: 50,
+    y: 80,
+  });
   const [bombPosition, setBombPosition] = useState<Position>({ x: 50, y: 20 });
   const [score, setScore] = useState(0);
 
-  const colided = useColided(ratPosition, bombPosition);
+  const colided = getColided(sonicPosition, bombPosition);
 
   const generateStars = () => {
     const count = Math.floor(Math.random() * 3) + 7;
@@ -22,7 +25,7 @@ const App: FC = () => {
       x: Math.random() * (95 - 4) + 4,
       y: Math.random() * (80 - 40) + 40,
     }));
-    setStarPositions(newStars);
+    setRingPositions(newStars);
   };
 
   useEffect(() => {
@@ -30,10 +33,10 @@ const App: FC = () => {
   }, []);
 
   useEffect(() => {
-    starPositions.forEach((starPos, index) => {
-      if (getScore(ratPosition, starPos)) {
+    ringPositions.forEach((starPos, index) => {
+      if (getScore(sonicPosition, starPos)) {
         setScore((prev) => prev + 1);
-        setStarPositions((prev) =>
+        setRingPositions((prev) =>
           prev.map((pos, i) =>
             i === index
               ? {
@@ -45,21 +48,21 @@ const App: FC = () => {
         );
       }
     });
-  }, [ratPosition, starPositions]);
+  }, [sonicPosition, ringPositions]);
 
-  const handleRatPosition = (value: SetStateAction<Position>) => {
-    setRatPosition(value);
+  const handleSonicPosition = (value: SetStateAction<Position>) => {
+    setSonicPosition(value);
   };
 
   const handleBombPosition = (value: SetStateAction<Position>) => {
     setBombPosition(value);
   };
 
-  const handleStarPosition = (
+  const handleRingPositions = (
     index: number,
     value: SetStateAction<Position>
   ) => {
-    setStarPositions((prev) =>
+    setRingPositions((prev) =>
       prev.map((pos, i) =>
         i === index ? (typeof value === 'function' ? value(pos) : value) : pos
       )
@@ -72,18 +75,21 @@ const App: FC = () => {
         Score: {score}
       </div>
 
-      <Rat ratPosition={ratPosition} handleRatPosition={handleRatPosition} />
+      <Sonic
+        sonicPosition={sonicPosition}
+        handleSonicPosition={handleSonicPosition}
+      />
       <Bomb
         colided={colided}
         bombPosition={bombPosition}
         handleBombPosition={handleBombPosition}
       />
-      {starPositions.map((pos, index) => (
-        <Star
+      {ringPositions.map((pos, index) => (
+        <Ring
           key={index}
           colided={colided}
-          starPosition={pos}
-          handleStarPosition={(value) => handleStarPosition(index, value)}
+          ringPositions={pos}
+          handleRingPositions={(value) => handleRingPositions(index, value)}
         />
       ))}
     </Layout>

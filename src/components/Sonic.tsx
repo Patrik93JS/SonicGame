@@ -1,12 +1,12 @@
 import { useEffect, useRef, type FC, type SetStateAction } from 'react';
-import ratImg from './../assets/ratImg.png';
+import sonic from './../assets/sonic.png';
 
 type Props = {
-  ratPosition: {
+  sonicPosition: {
     x: number;
     y: number;
   };
-  handleRatPosition: (
+  handleSonicPosition: (
     value: SetStateAction<{
       x: number;
       y: number;
@@ -14,13 +14,13 @@ type Props = {
   ) => void;
 };
 
-export const Rat: FC<Props> = ({ ratPosition, handleRatPosition }) => {
+export const Sonic: FC<Props> = ({ sonicPosition, handleSonicPosition }) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const startMoving = (direction: 'left' | 'right') => {
     stopMoving();
     intervalRef.current = setInterval(() => {
-      handleRatPosition((prev) => {
+      handleSonicPosition((prev) => {
         const step = 1;
         if (direction === 'left')
           return { x: Math.max(prev.x - step, 4), y: prev.y };
@@ -62,9 +62,9 @@ export const Rat: FC<Props> = ({ ratPosition, handleRatPosition }) => {
 
   return (
     <img
-      src={ratImg}
-      alt="Rat"
-      style={{ left: `${ratPosition.x}%`, top: `${ratPosition.y}%` }}
+      src={sonic}
+      alt="Sonic"
+      style={{ left: `${sonicPosition.x}%`, top: `${sonicPosition.y}%` }}
       className="absolute bottom-[10%] transform -translate-x-1/2 w-22 h-22"
     />
   );
