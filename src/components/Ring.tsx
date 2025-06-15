@@ -5,27 +5,27 @@ import {
   type FC,
   type SetStateAction,
 } from 'react';
-import starImg from './../assets/starImg.png';
+import ring from './../assets/ring.png';
 
 type Props = {
   colided: boolean;
-  starPosition: {
+  ringPositions: {
     x: number;
     y: number;
   };
-  handleStarPosition: Dispatch<SetStateAction<{ x: number; y: number }>>;
+  handleRingPositions: Dispatch<SetStateAction<{ x: number; y: number }>>;
 };
 
-export const Star: FC<Props> = ({
+export const Ring: FC<Props> = ({
   colided,
-  starPosition,
-  handleStarPosition,
+  ringPositions,
+  handleRingPositions,
 }) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const generateRandomPosition = () => {
     const x = Math.random() * (95 - 4) + 4;
-    handleStarPosition({ x, y: 20 });
+    handleRingPositions({ x, y: 20 });
   };
 
   const stopMoving = () => {
@@ -41,32 +41,32 @@ export const Star: FC<Props> = ({
   };
 
   useEffect(() => {
-    if (colided || starPosition.y >= 80) {
+    if (colided || ringPositions.y >= 80) {
       stopMoving();
     }
 
-    if (!colided && starPosition.y < 80 && intervalRef.current === null) {
+    if (!colided && ringPositions.y < 80 && intervalRef.current === null) {
       intervalRef.current = setInterval(() => {
-        handleStarPosition((prev) => {
+        handleRingPositions((prev) => {
           return { x: prev.x, y: prev.y + 1 };
         });
       }, 30);
     }
 
     return () => stopMoving();
-  }, [colided, starPosition.y]);
+  }, [colided, ringPositions.y]);
 
   useEffect(() => {
-    if (starPosition.y >= 80) {
+    if (ringPositions.y >= 80) {
       reset();
     }
-  }, [starPosition.y]);
+  }, [ringPositions.y]);
 
   return (
     <img
-      src={starImg}
-      alt="Star"
-      style={{ left: `${starPosition.x}%`, top: `${starPosition.y}%` }}
+      src={ring}
+      alt="Ring"
+      style={{ left: `${ringPositions.x}%`, top: `${ringPositions.y}%` }}
       className="absolute transform -translate-x-1/2 w-16 h-16"
     />
   );

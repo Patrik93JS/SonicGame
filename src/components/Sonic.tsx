@@ -63,7 +63,7 @@ export const Sonic: FC<Props> = ({ sonicPosition, handleSonicPosition }) => {
   return (
     <img
       src={sonic}
-      alt="Rat"
+      alt="Sonic"
       style={{ left: `${sonicPosition.x}%`, top: `${sonicPosition.y}%` }}
       className="absolute bottom-[10%] transform -translate-x-1/2 w-22 h-22"
     />
